@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>은빛</title>
+<style>
+body { font-family: Arial; background:#f5f5f5; }
+.box { background:white; padding:15px; margin:15px auto; width:90%; max-width:600px; border-radius:8px; }
+button { margin-top:5px; }
+textarea { width:100%; }
+</style>
+</head>
+<body>
+
+<div class="box">
+<h1>은빛</h1>
+
+<form method="post" action="/submit">
+<input name="nickname" placeholder="닉네임" required><br>
+<textarea name="content" placeholder="내용" required></textarea><br>
+<button>글쓰기</button>
+</form>
+</div>
+
+{% for post in posts %}
+<div class="box">
+<b>{{ post.nickname }}</b><br>
+<p>{{ post.content }}</p>
+
+<form method="post" action="/report/post/{{ post.id }}">
+<input name="reason" placeholder="글 신고 사유" required>
+<button>글 신고</button>
+</form>
+
+<hr>
+
+{% for c in post.comments %}
+<p>↳ {{ c.nickname }} : {{ c.content }}</p>
+<form method="post" action="/report/comment/{{ post.id }}/{{ c.id }}">
+<input name="reason" placeholder="댓글 신고 사유" required>
+<button>댓글 신고</button>
+</form>
+{% endfor %}
+
+<form method="post" action="/comment/{{ post.id }}">
+<input name="nickname" placeholder="닉네임" required>
+<input name="content" placeholder="댓글" required>
+<button>댓글 작성</button>
+</form>
+
+</div>
+{% endfor %}
+
+</body>
+</html>
